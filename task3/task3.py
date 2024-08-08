@@ -4,13 +4,13 @@
 value для структуры tests.json на основании values.json.
 
 На вход программы передается три пути к файлу:
-python task3.py -v 'путь к values' -t 'путь к tests' -r 'путь к report' 
+python task3.py 'путь к values' 'путь к tests' 'путь к report' 
 
 ps: важно указать путь в 'ковычках'
 """
 
-import argparse
 import json
+import sys
 
 from pathlib import Path
 
@@ -48,23 +48,19 @@ def merge_data(values_data, tests_data):
     report_data['tests'] = iterate_nested_dict(nested_dict, value_dict)
     return report_data
 
-def createParser():
-    """Функция обработки аргументов командной строки """
-    parser = argparse.ArgumentParser()
-    for name in ('-v', '-t', '-r'):
-        parser.add_argument(name, type=Path, required=True)
-    return parser
 
 if __name__ == "__main__":
-    parser = createParser()
-    args = parser.parse_args()
-    values_file = args.v
-    tests_file = args.t
-    report_file = args.r
+    if len(sys.argv) != 4:
+        print('Ошибка: укажите три пути к файлам')
+        sys.exit(1)
+    else:
+        values_file = sys.argv[1]
+        tests_file = sys.argv[2]
+        report_file = sys.argv[3]
 
-    values_data = read_json(values_file)
-    tests_data = read_json(tests_file)
-    report_data = merge_data(values_data, tests_data)
-    
-    result = write_json(report_data, report_file)
-    print(result)
+        values_data = read_json(values_file)
+        tests_data = read_json(tests_file)
+        report_data = merge_data(values_data, tests_data)
+        
+        result = write_json(report_data, report_file)
+        print(result)

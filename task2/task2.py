@@ -6,15 +6,13 @@
 Координаты точек считываются из файла-2.
 
 Пути к файлам передаются программе в качестве аргументов:
-python task2.py -c 'путь к файлу-1' -p 'путь к файлу-2'
+python task2.py 'путь к файлу-1' 'путь к файлу-2'
 
 ps: важно указать путь в 'ковычках'
 """
 
-import argparse
 import math
-
-from pathlib import Path
+import sys
 
 
 DISTANCE = {
@@ -89,20 +87,16 @@ def read_points_data(file_path) -> list:
                 break
     return points
 
-def createParser():
-    """Функция обработки аргументов командной строки """
-    parser = argparse.ArgumentParser()
-    for name in ('-c', '-p'):
-        parser.add_argument(name, type=Path, required=True)
-    return parser
 
 if __name__ == '__main__':
-    parser = createParser()
-    args = parser.parse_args()
-    circle_file = args.c
-    points_file = args.p
-    
-    circle = read_circle_data(circle_file)
-    points = read_points_data(points_file)
-    result = point_position(circle, points)
-    print('\n'.join(map(str, result)))
+    if len(sys.argv) != 3:
+        print('Ошибка: укажите два пути к файлам')
+        sys.exit(1)
+    else:
+        circle_file = sys.argv[1]
+        points_file = sys.argv[2]
+        
+        circle = read_circle_data(circle_file)
+        points = read_points_data(points_file)
+        result = point_position(circle, points)
+        print('\n'.join(map(str, result)))

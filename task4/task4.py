@@ -45,6 +45,7 @@ def read_file(file_path):
         data = [int(line.strip()) for line in f.readlines()]
     return data
 
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print('Ошибка: укажите один путь к файлу')

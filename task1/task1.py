@@ -7,10 +7,10 @@
 Путь - массив из начальных элементов полученных интервалов.
 
 Параметры передаются в качестве аргументов командной строки:
-python task1.py -n arg1 -m arg2
+python task1.py arg1 arg2
 """
 
-import argparse
+import sys
 
 from typing import List
 
@@ -63,21 +63,16 @@ def way_array(n: int, m: int) -> List[int]:
     result = [ x[0] for x in collector]
     return result
 
-def createParser():
-    """Функция обработки аргументов командной строки """
-    parser = argparse.ArgumentParser()
-    for name in ('-n', '-m'):
-        parser.add_argument(name, type=int, required=True)
-    return parser
 
 if __name__ == '__main__':
-    parser = createParser()
-    args = parser.parse_args()
+    if len(sys.argv) != 3:
+        print('Ошибка: нужно передать два аргумента')
+        sys.exit(1)
     try:
-        n: int = args.n
+        n: int = int(sys.argv[1])
         if n == 0:
             raise ValueError('Массив (n) не может быть равен 0')
-        m: int = args.m
+        m: int = int(sys.argv[2])
         if m == 0:
             raise ValueError('Интервал (m) не может быть равен 0')
         result = way_array(n, m)
